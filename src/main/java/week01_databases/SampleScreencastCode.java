@@ -37,17 +37,21 @@ public class SampleScreencastCode {
                     }catch(SQLException e){
                         System.out.println("Query \"" + sql + "\" could not be executed or result extraction could " +
                                 "not be completed.");
+                        System.out.println("Exception reads: " + e.getMessage());
                     }
                 }catch(SQLException e){
                     System.out.println("Could not prepare SQL: \"" + sql + "\"");
+                    System.out.println("Exception reads: " + e.getMessage());
                 }
             }catch(SQLException e){
                 System.out.println("Could not establish a connection to " + dbUrl +
                         " using " +  username + "as username");
+                System.out.println("Exception reads: " + e.getMessage());
             }
 
         } catch (ClassNotFoundException e) {
             System.out.println("ClassNotFoundException: Driver cannot be found");
+            System.out.println("Exception reads: " + e.getMessage());
             System.out.println("System terminating...");
         }
     }
