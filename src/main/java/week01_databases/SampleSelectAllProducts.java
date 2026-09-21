@@ -29,16 +29,20 @@ public class SampleSelectAllProducts {
                             System.out.println("Product Name: " + rs.getString("productName"));
                         }
                     }catch(SQLException e){
-                        System.out.println("Issue occurred when processing query or results");
+                        System.out.println("Exception: \"" + e.getMessage() + "\"");
+                        System.out.println("\tIssue occurred when processing query or results");
                     }
                 }catch(SQLException e){
-                    System.out.println("Cannot prepare statement: " + sql);
+                    System.out.println("Exception: \"" + e.getMessage() + "\"");
+                    System.out.println("\tCannot prepare statement: " + sql);
                 }
             }catch(SQLException e){
-                System.out.println("Cannot establish a connection to " + url);
+                System.out.println("Exception: \"" + e.getMessage() + "\"");
+                System.out.println("\tCannot establish a connection to " + url);
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("No driver files found - please check dependencies.");
+            System.out.println("Exception: \"" + e.getMessage() + "\"");
+            System.out.println("\tNo driver files found - please check dependencies.");
         }
 
     }
