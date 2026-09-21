@@ -2,7 +2,7 @@ package week01_databases;
 
 import java.sql.*;
 
-public class SampleScreencastCode {
+public class Screencast_SampleSelectAllCode {
     static void main(String[] args) {
         // Declare database constants
         String driver = "com.mysql.cj.jdbc.Driver";
