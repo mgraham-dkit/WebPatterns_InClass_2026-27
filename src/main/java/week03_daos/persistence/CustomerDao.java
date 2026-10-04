@@ -5,8 +5,8 @@ import week03_daos.entities.Customer;
 import java.util.List;
 
 public interface CustomerDao {
-    List<Customer> selectCustomerByName(String name);
-    List<Customer> selectCustomerContainingName(String name);
+    List<Customer> selectCustomersByName(String name);
+    List<Customer> selectCustomersContainingName(String name);
     Customer findCustomerById(int customerNumber);
     boolean addCustomer(Customer c);
 }
