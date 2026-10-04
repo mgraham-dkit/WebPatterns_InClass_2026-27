@@ -1,28 +1,26 @@
 package week03_daos.apps;
 
-import week03_daos.persistence.ProductDao;
 import week03_daos.persistence.ProductDaoImpl;
 
 public class Inventory {
-    static void main(String[] args) {
-        String productCode = "Hello002";
-        String productName = "Test Product";
-        String productLine = "Motorcycles";
+    static void main() {
+
+        String productCode = "SA_8713";
+        String productName = "2013 Kia";
+        String productLine = "Classic Cars";
         String productScale = "1:10";
-        String productVendor = "Toyota";
-        String productDescription = "Toy motorcycle";
-        int quantityInStock = 100;
-        double buyPrice = 1.29;
-        double msrp = 5.99;
+        String productVendor = "GabGop";
+        String ProductDescription = "Black Kia car";
+        int quantityInstock = 25;
+        double buyPrice = 500.55;
+        double MSRP = 600.55;
 
-        ProductDao productDao = new ProductDaoImpl();
-        boolean added = productDao.addProduct(productCode, productName, productLine, productScale, productVendor,
-                productDescription, quantityInStock, buyPrice, msrp);
 
-        if(added){
-            System.out.println("Product " + productCode + " added to database");
-        }else{
-            System.out.println("Product " + productCode + " cannot be added to database");
+        if (ProductDaoImpl.addProduct(productCode, productName, productLine, productScale, productVendor, ProductDescription, quantityInstock, buyPrice, MSRP)) {
+            System.out.println("Product added");
+        }
+        else {
+            System.out.println("Product was not added");
         }
     }
 }
