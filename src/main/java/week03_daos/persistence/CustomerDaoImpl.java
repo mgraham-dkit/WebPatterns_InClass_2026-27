@@ -12,20 +12,20 @@ public class CustomerDaoImpl implements CustomerDao {
     private String username = "root";
     private String password = "";
 
-    public List<Customer> selectCustomersByName(String name){
+    public List<Customer> selectCustomersByName(String name) {
         List<Customer> CustomerList = new ArrayList<>();
         try {
             // Load driver - pull in library of Java code to work with MySQL database
             Class.forName(driver);
 
             // Connect to database - make a connection to the specified URL with the supplied credentials
-            try(Connection conn = DriverManager.getConnection(url, username, password)){
+            try (Connection conn = DriverManager.getConnection(url, username, password)) {
                 // Prepare statement - Write an SQL statement and compile it into something
                 // the database can actually run
                 String sql = "SELECT * FROM customers WHERE customerName = ?";
-                try(PreparedStatement ps = conn.prepareStatement(sql)){
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     // Populate placeholder
-                    ps.setString(1,name);
+                    ps.setString(1, name);
 
                     ResultSet rs = ps.executeQuery();
 
@@ -49,11 +49,11 @@ public class CustomerDaoImpl implements CustomerDao {
                         CustomerList.add(c);
                     }
 
-                }catch(SQLException e){
+                } catch (SQLException e) {
                     System.out.println("Exception: \"" + e.getMessage() + "\"");
                     System.out.println("\tCannot prepare statement: " + sql);
                 }
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println("Exception: \"" + e.getMessage() + "\"");
                 System.out.println("\tCannot establish a connection to " + url);
             }
@@ -63,20 +63,21 @@ public class CustomerDaoImpl implements CustomerDao {
         }
         return CustomerList;
     }
-    public List<Customer> selectCustomersContainingName(String name){
+
+    public List<Customer> selectCustomersContainingName(String name) {
         List<Customer> CustomerList = new ArrayList<>();
         try {
             // Load driver - pull in library of Java code to work with MySQL database
             Class.forName(driver);
 
             // Connect to database - make a connection to the specified URL with the supplied credentials
-            try(Connection conn = DriverManager.getConnection(url, username, password)){
+            try (Connection conn = DriverManager.getConnection(url, username, password)) {
                 // Prepare statement - Write an SQL statement and compile it into something
                 // the database can actually run
                 String sql = "SELECT * FROM customers WHERE customerName LIKE ?";
-                try(PreparedStatement ps = conn.prepareStatement(sql)){
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     // Populate placeholder
-                    ps.setString(1,"%" + name + "%");
+                    ps.setString(1, "%" + name + "%");
 
                     ResultSet rs = ps.executeQuery();
 
@@ -100,11 +101,11 @@ public class CustomerDaoImpl implements CustomerDao {
                         CustomerList.add(c);
                     }
 
-                }catch(SQLException e){
+                } catch (SQLException e) {
                     System.out.println("Exception: \"" + e.getMessage() + "\"");
                     System.out.println("\tCannot prepare statement: " + sql);
                 }
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println("Exception: \"" + e.getMessage() + "\"");
                 System.out.println("\tCannot establish a connection to " + url);
             }
@@ -114,7 +115,8 @@ public class CustomerDaoImpl implements CustomerDao {
         }
         return CustomerList;
     }
-    public Customer findCustomerById(int id){
+
+    public Customer findCustomerById(int id) {
         Customer c = null;
 
         try {
@@ -122,13 +124,13 @@ public class CustomerDaoImpl implements CustomerDao {
             Class.forName(driver);
 
             // Connect to database - make a connection to the specified URL with the supplied credentials
-            try(Connection conn = DriverManager.getConnection(url, username, password)){
+            try (Connection conn = DriverManager.getConnection(url, username, password)) {
                 // Prepare statement - Write an SQL statement and compile it into something
                 // the database can actually run
                 String sql = "SELECT * FROM customers WHERE customerNumber = ?";
-                try(PreparedStatement ps = conn.prepareStatement(sql)){
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     // Populate placeholder
-                    ps.setInt(1,id);
+                    ps.setInt(1, id);
 
                     ResultSet rs = ps.executeQuery();
 
@@ -150,6 +152,53 @@ public class CustomerDaoImpl implements CustomerDao {
                         c = new Customer(customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, salesRepEmployeeNumber, creditLimit);
                     }
 
+                } catch (SQLException e) {
+                    System.out.println("Exception: \"" + e.getMessage() + "\"");
+                    System.out.println("\tCannot prepare statement: " + sql);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception: \"" + e.getMessage() + "\"");
+                System.out.println("\tCannot establish a connection to " + url);
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("Exception: \"" + e.getMessage() + "\"");
+            System.out.println("\tNo driver files found - please check dependencies.");
+        }
+        return c;
+    }
+
+    public boolean addCustomer(Customer c) {
+
+        try {
+            // Load driver - pull in library of Java code to work with MySQL database
+            Class.forName(driver);
+
+            // Connect to database - make a connection to the specified URL with the supplied credentials
+            try(Connection conn = DriverManager.getConnection(url, username, password)){
+                // Prepare statement - Write an SQL statement and compile it into something
+                // the database can actually run
+                String sql = "INSERT INTO customers VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                try(PreparedStatement ps = conn.prepareStatement(sql)){
+                    // Populate placeholder
+                    ps.setInt(1, c.customerNumber());
+                    ps.setString(2, c.customerName());
+                    ps.setString(3, c.contactLastName());
+                    ps.setString(4, c.contactFirstName());
+                    ps.setString(5, c.phone());
+                    ps.setString(6, c.addressLine1());
+                    ps.setString(7, c.addressLine2());
+                    ps.setString(8, c.city());
+                    ps.setString(9, c.state());
+                    ps.setString(10, c.postalCode());
+                    ps.setString(11, c.country());
+                    ps.setInt(12, c.salesRepEmployeeNumber());
+                    ps.setDouble(13, c.creditLimit());
+
+                    // Run query - Execute the SQL that has been compiled and get the results
+                    int rowsAffected = ps.executeUpdate();
+                    if(rowsAffected > 0){
+                        return true;
+                    }
                 }catch(SQLException e){
                     System.out.println("Exception: \"" + e.getMessage() + "\"");
                     System.out.println("\tCannot prepare statement: " + sql);
@@ -162,6 +211,6 @@ public class CustomerDaoImpl implements CustomerDao {
             System.out.println("Exception: \"" + e.getMessage() + "\"");
             System.out.println("\tNo driver files found - please check dependencies.");
         }
-        return c;
+        return false;
     }
 }
