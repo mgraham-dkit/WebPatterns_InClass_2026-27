@@ -11,11 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDaoImpl implements CustomerDao {
+    private Connector connector;
+
+    public CustomerDaoImpl(Connector connector){
+        this.connector = connector;
+    }
+
     @Override
     public List<Customer> selectCustomersByName(String name) {
         List<Customer> customers = new ArrayList<>();
 
-        Connector connector = new Connector();
         Connection conn = connector.getConnection();
         if (conn == null) {
             System.out.println("No connection available!");
@@ -69,8 +74,6 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public List<Customer> selectCustomersContainingName(String name) {
         List<Customer> customers = new ArrayList<>();
-
-        Connector connector = new Connector();
         Connection conn = connector.getConnection();
 
         // Prepare statement - Write an SQL statement and compile it into something
@@ -98,7 +101,8 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     static void main(String[] args) {
-        CustomerDao customerDao = new CustomerDaoImpl();
+        Connector connector = new MySqlConnector();
+        CustomerDao customerDao = new CustomerDaoImpl(connector);
         List<Customer> customers = customerDao.selectCustomersByName("Atelier Graphique");
 
         System.out.println("Customers with matching Atelier Graphique:");
