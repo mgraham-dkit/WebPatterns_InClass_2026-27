@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CustomerDao {
     List<Customer> selectCustomersByName(String name);
+    List<Customer> selectCustomersContainingName(String name);
 }
