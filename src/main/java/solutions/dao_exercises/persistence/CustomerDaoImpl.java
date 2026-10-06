@@ -26,7 +26,7 @@ public class CustomerDaoImpl implements CustomerDao{
             try(Connection conn = DriverManager.getConnection(url, username, password)){
                 // Prepare statement - Write an SQL statement and compile it into something
                 // the database can actually run
-                String sql = "SELECT * FROM customers WHERE ?";
+                String sql = "SELECT * FROM customers WHERE customerName = ?";
                 try(PreparedStatement ps = conn.prepareStatement(sql)){
                     ps.setString(1, name);
                     // Run query - Execute the SQL that has been compiled and get the results
