@@ -45,4 +45,24 @@ public class MySqlConnector implements Connector {
             }
         }
     }
+
+    public void disableConnectionAutoCommit(){
+        if(connection != null){
+            try{
+                connection.setAutoCommit(false);
+            }catch (SQLException e){
+                System.out.println("An exception occurred when attempting to set autocommit to false. \nException: "+ e.getMessage());
+            }
+        }
+    }
+
+    public void commit(){
+        if(connection != null){
+            try{
+                connection.commit();
+            }catch (SQLException e){
+                System.out.println("An exception occurred when attempting to commit changes. \nException: "+ e.getMessage());
+            }
+        }
+    }
 }
