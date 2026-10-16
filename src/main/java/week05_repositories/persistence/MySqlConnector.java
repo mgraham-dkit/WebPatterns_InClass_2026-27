@@ -14,7 +14,20 @@ public class MySqlConnector implements Connector {
 
     private Connection connection;
 
+    public MySqlConnector(){
+        this.connection = null;
+    }
+
+    public MySqlConnector(Connection connection) {
+        this.connection = connection;
+    }
+
     public Connection getConnection() {
+        // If we already have a connection, use that one (this ensures it's shared)
+        if(connection != null){
+            return connection;
+        }
+
         try {
             // Load driver - pull in library of Java code to work with MySQL database
             Class.forName(driver);
