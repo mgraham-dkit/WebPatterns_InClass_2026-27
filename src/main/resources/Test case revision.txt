@@ -1,0 +1,41 @@
+Test cases for get single result:
+1) Invalid input:
+    -> Null
+    -> Empty
+    -> Invalid
+2) Valid input:
+    -> Match found
+        -> Does returned object match expected result?
+    -> No match found
+        -> Does method return null/no match?
+
+Test cases for get multiple matches:
+1) Invalid input:
+    -> Null
+    -> Empty
+    -> Invalid
+2) Valid input:
+    -> No match found
+        -> Does method return null/no match?
+    -> Single match found
+        -> Does result contain only 1 element?
+        -> Does element match expected result? (deepEquals() to confirm all aspects match)
+    -> Multiple matches found
+        -> Does result collection contain correct number of elements?
+        -> Does each element match the corresponding expected result? (deepEquals() to confirm all aspects match)
+
+
+Test cases for adding (inserting) to database:
+
+1) Invalid input:
+    - Null
+    - Empty
+    - Invalid
+
+2) Valid data:
+    -> Record inserted as expected
+        -> Did method return correctly? (True/false?)
+        -> Can you select the newly added record back from the database?
+        -> Does its values match what we put in?
+    -> Record wasn't inserted (already exists)
+        -> Did method return correctly? (false? Exception?)
