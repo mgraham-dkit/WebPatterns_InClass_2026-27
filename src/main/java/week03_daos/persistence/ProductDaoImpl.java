@@ -122,4 +122,54 @@ public class ProductDaoImpl implements ProductDao {
 
         return products;
     }
+    public static boolean addProduct(String productCode, String productName, String productLine, String productScale, String productVendor, String productDescription, int quantityInStock, double buyPrice, double msrp) {
+        // Create variables to hold database details
+        // This supports clearer intention in code, and avoids "magic" numbers/strings
+        String driver = "com.mysql.cj.jdbc.Driver";
+        String url = "jdbc:mysql://127.0.0.1:3306/classicmodels";
+        String username = "root";
+        String password = "";
+
+        boolean added = false;
+
+        try {
+            // Load driver - pull in library of Java code to work with MySQL database
+            Class.forName(driver);
+
+            // Connect to database - make a connection to the specified URL with the supplied credentials
+            try(Connection conn = DriverManager.getConnection(url, username, password)){
+
+                String sql = "INSERT INTO products VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                try(PreparedStatement ps = conn.prepareStatement(sql)){
+
+                    ps.setString(1, productCode);
+                    ps.setString(2, productName);
+                    ps.setString(3, productLine);
+                    ps.setString(4, productScale);
+                    ps.setString(5, productVendor);
+                    ps.setString(6, productDescription);
+                    ps.setInt(7, quantityInStock);
+                    ps.setDouble(8, buyPrice);
+                    ps.setDouble(9, msrp);
+
+                    // 5) Execute insert (a form of update) and see how many rows are impacted
+                    int rowsAffected = ps.executeUpdate();
+                    System.out.println("Number of rows added = " + rowsAffected);
+                    if (rowsAffected > 0) {
+                        return true;
+                    }
+                }catch(SQLException e){
+                    System.out.println("Exception: \"" + e.getMessage() + "\"");
+                    System.out.println("\tCannot prepare statement: " + sql);
+                }
+            }catch(SQLException e){
+                System.out.println("Exception: \"" + e.getMessage() + "\"");
+                System.out.println("\tCannot establish a connection to " + url);
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("Exception: \"" + e.getMessage() + "\"");
+            System.out.println("\tNo driver files found - please check dependencies.");
+        }
+        return added;
+    }
 }
