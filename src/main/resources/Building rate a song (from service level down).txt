@@ -1,0 +1,25 @@
+Database level requirements:
+    - Connector
+
+DAO level requirements:
+    - UserDao to check user status
+    - RatingDao to add a rating
+    - SongDao to get song details?
+
+Repository requirements:
+    - UserRepository to confirm user permissions
+    - RatingRepository to rate a song
+
+Service requirements:
+    - Validation of:
+        -> song id
+        -> user id
+        -> rating value
+    - Check user permissions
+    - Attempt to rate song
+        -> Success:
+                -- log rating was made
+                -- return success status
+        -> Failed:
+                -- log failed rating attempt
+                -- return failure status
