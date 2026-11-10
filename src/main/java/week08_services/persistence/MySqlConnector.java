@@ -111,9 +111,16 @@ public class MySqlConnector implements Connector {
         if (connection != null) {
             try {
                 connection.commit();
+                connection.setAutoCommit(true);
             } catch (SQLException e) {
-                LOGGER.error("An exception occurred when attempting to commit changes. \nException: {}",
+                LOGGER.error("An exception occurred when attempting to commit changes. Connection considered " +
+                                "unusable - resetting" +
+                                " to null." +
+                                "\nException: {}",
                         e.getMessage());
+                freeConnection();
+                throw new DatabaseConnectionException("An exception occurred when attempting to commit changes. " +
+                        "Connection considered unusable and has been reset to null", e);
             }
         }
     }
@@ -125,8 +132,14 @@ public class MySqlConnector implements Connector {
                 connection.rollback();
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                throw new DatabaseConnectionException("An exception occurred when attempting to roll back changes", e);
+                LOGGER.error("An exception occurred when attempting to roll back changes. Connection considered " +
+                                "unusable - resetting" +
+                                " to null." +
+                                "\nException: {}",
+                        e.getMessage());
+                freeConnection();
+                throw new DatabaseConnectionException("An exception occurred when attempting to roll back changes. " +
+                        "Connection considered unusable and has been reset to null", e);
             }
         }
     }
